@@ -1,8 +1,8 @@
 import env from 'dotenv';
 import Sequelize from 'sequelize';
-
 env.config();
 
+// configure the db settings
 const db = new Sequelize({
 	dialect: 'mysql',
 	database: 'ThesisDB',

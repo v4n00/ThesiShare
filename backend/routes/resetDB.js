@@ -3,6 +3,7 @@ import db from '../configDB.js';
 
 let resetDB = express.Router();
 
+// route to reset to set/reset the local db
 resetDB.route('/reset-db').get(async (req, res) => {
 	try {
 		await db.sync({ force: true });

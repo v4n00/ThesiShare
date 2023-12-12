@@ -28,22 +28,29 @@ function createDB() {
 		});
 }
 
+// configure foreign keys
 function configFK() {
+	// Professor to Student - Many-to-One relationship
 	Professor.hasMany(Student, { foreignKey: 'professorId' });
 	Student.belongsTo(Professor, { foreignKey: 'assignedProfessorId' });
 
+	// Student to PreRequest - Many-to-One relationship
 	Student.hasMany(PreRequest, { foreignKey: 'studentId' });
 	PreRequest.belongsTo(Student, { foreignKey: 'studentId' });
 
+	// RegistrationSession to PreRequest - Many-to-One relationship
 	RegistrationSession.hasMany(PreRequest, { foreignKey: 'sessionId' });
 	PreRequest.belongsTo(RegistrationSession, { foreignKey: 'sessionId' });
 
+	// Professor to RegistrationSession - Many-to-One relationship
 	Professor.hasMany(RegistrationSession, { foreignKey: 'professorId' });
 	RegistrationSession.belongsTo(Professor, { foreignKey: 'professorId' });
 
+	// Professor to MainRequest - Many-to-One relationship
 	Professor.hasMany(MainRequest, { foreignKey: 'professorId' });
 	MainRequest.belongsTo(Professor, { foreignKey: 'professorId' });
 
+	// Student to MainRequest - One-to-One relationship
 	Student.hasOne(MainRequest, { foreignKey: 'studentId' });
 	MainRequest.belongsTo(Student, { foreignKey: 'studentId' });
 }

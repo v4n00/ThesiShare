@@ -1,10 +1,42 @@
 .navContainer{
-width: 100vw;
-height: 10vh;
-background-color: red;
+    width: 100vw;
+    height: 10vh;
+    background-color: rgb(18, 186, 177);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navTitle{
+    margin-left: 4vh;
+    font-size: larger;
+    font-weight: bold;
+    /* border-radius: 10px; */
+    /* padding:10px; */
+    /* background-color: rgb(99, 252, 252); */
+    user-select: none;
+}
+
+.navButtons {
+    display: flex;
+    gap: 2vw;
+    margin-right: 4vh;
+    font-weight: bold;
+    user-select: none;
+}
+
+.logout:active {
+    background-color: rgb(87, 223, 223);
+}
+
+.logout{
+    transition: background-color 0.3s; 
+    background-color: rgb(99, 252, 252);
+    padding: 10px;
+    border-radius: 10px;
 }
 
 .outlet{
-width: 100vw;
-height: 90vh;
+    width: 100vw;
+    height: 90vh;
 }

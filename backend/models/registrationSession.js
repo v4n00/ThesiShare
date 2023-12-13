@@ -1,7 +1,7 @@
 import { Sequelize } from 'sequelize';
-import db from '../configDB.js';
+import db from '../config/database.js';
 
-const RegistrationSession = db.define('RegistrationSession', {
+const registrationSession = db.define('RegistrationSession', {
 	sessionId: {
 		type: Sequelize.INTEGER,
 		primaryKey: true,
@@ -29,4 +29,4 @@ const RegistrationSession = db.define('RegistrationSession', {
 	},
 });
 
-export default RegistrationSession;
+export default registrationSession;

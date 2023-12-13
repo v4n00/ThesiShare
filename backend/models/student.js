@@ -1,12 +1,12 @@
 import { Sequelize } from 'sequelize';
-import db from '../configDB.js';
+import db from '../config/database.js';
 
 // THIS CLASS ONLY HAS THE MODEL
 // If you want to access methods for this class, use the methods inside User.js
 // and for the 'model' argument specify the object defined below
 
-const Professor = db.define('Professor', {
-	professorId: {
+const student = db.define('Student', {
+	studentId: {
 		type: Sequelize.INTEGER,
 		primaryKey: true,
 		autoIncrement: true,
@@ -24,6 +24,10 @@ const Professor = db.define('Professor', {
 		type: Sequelize.STRING,
 		allowNull: false,
 	},
+	assignedProfessorId: {
+		type: Sequelize.INTEGER,
+		allowNull: true,
+	},
 });
 
-export default Professor;
+export default student;

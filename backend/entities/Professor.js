@@ -25,7 +25,7 @@ const Professor = db.define('Professor', {
 export async function createProfessor(professor) {
 	let duplicateProfessor;
 	try {
-		duplicateProfessor = await getStudentByEmail(professor.email);
+		duplicateProfessor = await getProfessorByEmail(professor.email);
 	} catch (e) {
 		await Professor.create(professor);
 	}

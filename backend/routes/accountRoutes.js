@@ -1,56 +1,62 @@
 import express from 'express';
-import { createProfessor, getProfessorByEmailAndPassword } from '../entities/Professor.js';
-import { createStudent, getStudentByEmailAndPassword } from '../entities/Student.js';
+import Professor from '../entities/Professor.js';
+import Student from '../entities/Student.js';
+import { createUser, getUserByEmailAndCheckPassword } from '../entities/User.js';
 
 const accountsRoutes = express.Router();
 
-// Student login
-accountsRoutes.route('/student/login').get(async (req, res) => {
+// Student login route
+accountsRoutes.route('/student/login').get((req, res) => {
 	// request body should have these 2 parameters
 	// email - string
 	// password - string
-	const { email, password } = req.body;
-
-	// check malformed request
-	if (!email || !password) return res.status(400).json('Bad Request');
-
-	try {
-		// return student if found
-		const student = await getStudentByEmailAndPassword(email, password);
-		return res.status(200).json(student);
-	} catch (e) {
-		console.warn(e.stack);
-		return res.status(401).json(e.message);
-	}
+	return loginHandler(req, res, Student);
 });
 
-// Professor login
-accountsRoutes.route('/professor/login').get(async (req, res) => {
+// Professor login route
+accountsRoutes.route('/professor/login').get((req, res) => {
 	// request body should have these 2 parameters
 	// email - string
 	// password - string
-	const { email, password } = req.body;
-
-	// check malformed request
-	if (!email || !password) return res.status(400).json('Bad Request');
-
-	try {
-		// return professor if found
-		let professor = await getProfessorByEmailAndPassword(email, password);
-		return res.status(200).json(professor);
-	} catch (e) {
-		console.warn(e.stack);
-		return res.status(401).json(e.message);
-	}
+	return loginHandler(req, res, Professor);
 });
 
-// Student register
-accountsRoutes.route('/student/register').post(async (req, res) => {
+// Student register route
+accountsRoutes.route('/student/register').post((req, res) => {
 	// request body should have these 4 parameters
 	// name - string
 	// email - string
 	// password - string
 	// repeatPassword - string
+	return registerHandler(req, res, Student);
+});
+
+// Professor register route
+accountsRoutes.route('/professor/register').post((req, res) => {
+	// request body should have these 4 parameters
+	// name - string
+	// email - string
+	// password - string
+	// repeatPassword - string
+	return registerHandler(req, res, Professor);
+});
+
+async function loginHandler(req, res, userType) {
+	const { email, password } = req.body;
+
+	// check malformed request
+	if (!email || !password) return res.status(400).json('Bad Request');
+
+	try {
+		const user = await getUserByEmailAndCheckPassword(userType, email, password);
+		return res.status(200).json(user);
+	} catch (e) {
+		console.warn(e.stack);
+		return res.status(401).json(e.message);
+	}
+}
+
+async function registerHandler(req, res, userType) {
 	const { name, email, password, repeatPassword } = req.body;
 
 	// email validation
@@ -68,46 +74,12 @@ accountsRoutes.route('/student/register').post(async (req, res) => {
 		return res.status(400).json('Password must be at least 8 characters long');
 	}
 
-	// create user
 	try {
-		await createStudent({ name, email, password });
+		await createUser(userType, { name, email, password });
+		return res.status(201).json(`Registered successfully`);
 	} catch (e) {
 		return res.status(409).json(e.message);
 	}
-	return res.status(201).json('Student registered successfully');
-});
-
-// Professor register
-accountsRoutes.route('/professor/register').post(async (req, res) => {
-	// request body should have these 4 parameters
-	// name - string
-	// email - string
-	// password - string
-	// repeatPassword - string
-	const { name, email, password, repeatPassword } = req.body;
-
-	// email validation
-	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-	if (!emailRegex.test(email)) {
-		return res.status(400).json('Invalid email format');
-	}
-
-	// password validations
-	if (password !== repeatPassword) {
-		return res.status(400).json('Passwords do not match');
-	}
-
-	if (password.length < 8) {
-		return res.status(400).json('Password must be at least 8 characters long');
-	}
-
-	// create user
-	try {
-		await createProfessor({ name, email, password });
-	} catch (e) {
-		return res.status(409).json(e.message);
-	}
-	return res.status(201).json('Professor registered successfully');
-});
+}
 
 export default accountsRoutes;

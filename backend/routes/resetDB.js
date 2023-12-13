@@ -1,6 +1,6 @@
 import express from 'express';
 import db from '../configDB.js';
-import { createStudent } from '../entities/Student.js';
+import Student from '../entities/Student.js';
 
 let resetDB = express.Router();
 
@@ -18,7 +18,7 @@ resetDB.route('/reset-db').get(async (req, res) => {
 		email: 'test@test.com',
 		password: '1234',
 	};
-	await createStudent(student);
+	await createUser(Student, student);
 });
 
 export default resetDB;

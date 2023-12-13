@@ -31,7 +31,7 @@ function createDB() {
 // configure foreign keys
 function configFK() {
 	// Professor to Student - Many-to-One relationship
-	Professor.hasMany(Student, { foreignKey: 'professorId' });
+	Professor.hasMany(Student, { foreignKey: 'assignedProfessorId' });
 	Student.belongsTo(Professor, { foreignKey: 'assignedProfessorId' });
 
 	// Student to PreRequest - Many-to-One relationship

@@ -1,6 +1,7 @@
 import env from 'dotenv';
 import express from 'express';
 import initDB from './entities/initDB.js';
+import accountsRoutes from './routes/accountRoutes.js';
 import resetDB from './routes/resetDB.js';
 
 // configuration
@@ -15,6 +16,7 @@ app.use(
 
 initDB();
 app.use('/api', resetDB);
+app.use('/api', accountsRoutes);
 
 // start the server
 let port = process.env.PORT || 8000;

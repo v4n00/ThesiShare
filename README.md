@@ -5,7 +5,7 @@ The application has to handle the registration process for dissertation coordina
 The application is built on a **Single Page Application** architecture and is accessible from the browser on the desktop, mobile devices or tablets (depending on user preference).
 
 > [!IMPORTANT]
-> To start this project you need to have a [MySQL](https://dev.mysql.com/downloads/mysql/) server installed.
+> Use `npm run init` to reset the database, and use `npm run dev` to start developing
 
 # Functionalities
 

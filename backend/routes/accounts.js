@@ -1,44 +1,44 @@
 import express from 'express';
-import Professor from '../entities/Professor.js';
-import Student from '../entities/Student.js';
-import { createUser, getUserByEmailAndCheckPassword } from '../entities/User.js';
+import professor from '../models/professor.js';
+import student from '../models/student.js';
+import { createUser, getUserByEmailAndCheckPassword } from '../models/user.js';
 
-const accountsRoutes = express.Router();
+const accounts = express.Router();
 
-// Student login route
-accountsRoutes.route('/student/login').get((req, res) => {
+// student login route
+accounts.route('/student/login').get((req, res) => {
 	// request body should have these 2 parameters
 	// email - string
 	// password - string
-	return loginHandler(req, res, Student);
+	return loginHandler(req, res, student);
 });
 
-// Professor login route
-accountsRoutes.route('/professor/login').get((req, res) => {
+// professor login route
+accounts.route('/professor/login').get((req, res) => {
 	// request body should have these 2 parameters
 	// email - string
 	// password - string
-	return loginHandler(req, res, Professor);
+	return loginHandler(req, res, professor);
 });
 
-// Student register route
-accountsRoutes.route('/student/register').post((req, res) => {
+// student register route
+accounts.route('/student/register').post((req, res) => {
 	// request body should have these 4 parameters
 	// name - string
 	// email - string
 	// password - string
 	// repeatPassword - string
-	return registerHandler(req, res, Student);
+	return registerHandler(req, res, student);
 });
 
-// Professor register route
-accountsRoutes.route('/professor/register').post((req, res) => {
+// professor register route
+accounts.route('/professor/register').post((req, res) => {
 	// request body should have these 4 parameters
 	// name - string
 	// email - string
 	// password - string
 	// repeatPassword - string
-	return registerHandler(req, res, Professor);
+	return registerHandler(req, res, professor);
 });
 
 async function loginHandler(req, res, userType) {
@@ -76,10 +76,10 @@ async function registerHandler(req, res, userType) {
 
 	try {
 		await createUser(userType, { name, email, password });
-		return res.status(201).json(`Registered successfully`);
+		return res.status(201).json(`${userType.name} registered successfully`);
 	} catch (e) {
 		return res.status(409).json(e.message);
 	}
 }
 
-export default accountsRoutes;
+export default accounts;

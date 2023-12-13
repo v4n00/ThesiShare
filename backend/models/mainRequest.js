@@ -1,7 +1,7 @@
 import { Sequelize } from 'sequelize';
-import db from '../configDB.js';
+import db from '../config/database.js';
 
-const MainRequest = db.define('MainRequest', {
+const mainRequest = db.define('MainRequest', {
 	mainRequestId: {
 		type: Sequelize.INTEGER,
 		primaryKey: true,
@@ -29,4 +29,4 @@ const MainRequest = db.define('MainRequest', {
 	},
 });
 
-export default MainRequest;
+export default mainRequest;

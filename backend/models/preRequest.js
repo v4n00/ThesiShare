@@ -1,7 +1,7 @@
 import { Sequelize } from 'sequelize';
-import db from '../configDB.js';
+import db from '../config/database.js';
 
-const PreRequest = db.define('PreRequest', {
+const preRequest = db.define('PreRequest', {
 	preRequestId: {
 		type: Sequelize.INTEGER,
 		primaryKey: true,
@@ -29,4 +29,4 @@ const PreRequest = db.define('PreRequest', {
 	},
 });
 
-export default PreRequest;
+export default preRequest;

@@ -6,7 +6,7 @@
 	"main": "index.js",
 	"scripts": {
 		"dev": "nodemon index.js",
-		"init": "node init.js"
+		"rdb": "node config/resetDatabase.js"
 	},
 	"author": "v4n00",
 	"license": "ISC",

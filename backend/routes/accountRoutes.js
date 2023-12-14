@@ -3,10 +3,10 @@ import professor from '../models/professor.js';
 import student from '../models/student.js';
 import { createUser, getUserByEmailAndCheckPassword } from '../models/user.js';
 
-const accounts = express.Router();
+const accountRoutes = express.Router();
 
 // student login route
-accounts.route('/student/login').get((req, res) => {
+accountRoutes.route('/student/login').get((req, res) => {
 	// request body should have these 2 parameters
 	// email - string
 	// password - string
@@ -14,7 +14,7 @@ accounts.route('/student/login').get((req, res) => {
 });
 
 // professor login route
-accounts.route('/professor/login').get((req, res) => {
+accountRoutes.route('/professor/login').get((req, res) => {
 	// request body should have these 2 parameters
 	// email - string
 	// password - string
@@ -22,7 +22,7 @@ accounts.route('/professor/login').get((req, res) => {
 });
 
 // student register route
-accounts.route('/student/register').post((req, res) => {
+accountRoutes.route('/student/register').post((req, res) => {
 	// request body should have these 4 parameters
 	// name - string
 	// email - string
@@ -32,7 +32,7 @@ accounts.route('/student/register').post((req, res) => {
 });
 
 // professor register route
-accounts.route('/professor/register').post((req, res) => {
+accountRoutes.route('/professor/register').post((req, res) => {
 	// request body should have these 4 parameters
 	// name - string
 	// email - string
@@ -52,12 +52,14 @@ async function loginHandler(req, res, userType) {
 		return res.status(200).json(user);
 	} catch (e) {
 		console.warn(e.stack);
-		return res.status(401).json(e.message);
+		return res.status(500).json(e.message);
 	}
 }
 
 async function registerHandler(req, res, userType) {
 	const { name, email, password, repeatPassword } = req.body;
+
+	if (!name || !email || !password || !repeatPassword) return res.status(400).json('Bad Request');
 
 	// email validation
 	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -75,11 +77,11 @@ async function registerHandler(req, res, userType) {
 	}
 
 	try {
-		await createUser(userType, { name, email, password });
-		return res.status(201).json(`${userType.name} registered successfully`);
+		const user = await createUser(userType, { name, email, password });
+		return res.status(201).json(user);
 	} catch (e) {
-		return res.status(409).json(e.message);
+		return res.status(500).json(e.message);
 	}
 }
 
-export default accounts;
+export default accountRoutes;

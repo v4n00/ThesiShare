@@ -1,5 +1,7 @@
 import express from 'express';
-import accounts from './routes/accounts.js';
+import initDatabase from './config/initDatabase.js';
+import accountRoutes from './routes/accountRoutes.js';
+import registerSessionRoutes from './routes/registerSessionRoutes.js';
 
 // configuration
 let port = 8080;
@@ -11,8 +13,12 @@ app.use(
 	})
 );
 
+// init db
+initDatabase();
+
 // link routers
-app.use('/api', accounts);
+app.use('/api', accountRoutes);
+app.use('/api', registerSessionRoutes);
 
 // start the server
 app.listen(port);

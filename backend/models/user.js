@@ -11,7 +11,7 @@ export async function createUser(model, user) {
 	try {
 		duplicateUser = await getUserByEmail(model, user.email);
 	} catch (e) {
-		await model.create(user);
+		return await model.create(user);
 	}
 
 	if (duplicateUser) throw new Error(`${model.name} already exists`);

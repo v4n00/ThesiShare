@@ -1,5 +1,6 @@
 import express from 'express';
 import accounts from './routes/accounts.js';
+import registerSession from './routes/registerForSession.js';
 
 // configuration
 let port = 8080;
@@ -13,6 +14,7 @@ app.use(
 
 // link routers
 app.use('/api', accounts);
+app.use('/api', registerSession);
 
 // start the server
 app.listen(port);

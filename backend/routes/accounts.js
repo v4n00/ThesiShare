@@ -52,12 +52,14 @@ async function loginHandler(req, res, userType) {
 		return res.status(200).json(user);
 	} catch (e) {
 		console.warn(e.stack);
-		return res.status(401).json(e.message);
+		return res.status(500).json(e.message);
 	}
 }
 
 async function registerHandler(req, res, userType) {
 	const { name, email, password, repeatPassword } = req.body;
+
+	if (!name || !email || !password || !repeatPassword) return res.status(400).json('Bad Request');
 
 	// email validation
 	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -75,10 +77,10 @@ async function registerHandler(req, res, userType) {
 	}
 
 	try {
-		await createUser(userType, { name, email, password });
-		return res.status(201).json(`${userType.name} registered successfully`);
+		const user = await createUser(userType, { name, email, password });
+		return res.status(201).json(user);
 	} catch (e) {
-		return res.status(409).json(e.message);
+		return res.status(500).json(e.message);
 	}
 }
 

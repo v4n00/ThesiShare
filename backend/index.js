@@ -1,4 +1,5 @@
 import express from 'express';
+import initDatabase from './config/initDatabase.js';
 import accounts from './routes/accounts.js';
 import registerSession from './routes/registerForSession.js';
 
@@ -11,6 +12,9 @@ app.use(
 		extended: true,
 	})
 );
+
+// init db
+initDatabase();
 
 // link routers
 app.use('/api', accounts);

@@ -57,7 +57,7 @@ export async function createRegistrationSession(session) {
 
 export async function getAllActiveRegistrationSessions() {
 	const today = new Date();
-	const activeSessions = await registrationSession.findAll({
+	const activeSessions = await registrationSession.findOne({
 		where: {
 			startTime: {
 				[Sequelize.Op.lte]: today,
@@ -69,8 +69,7 @@ export async function getAllActiveRegistrationSessions() {
 		include: [
 			{
 				model: professor,
-				attributes: ['professorName'],
-				where: {},
+				attributes: ['name'],
 			},
 		],
 	});

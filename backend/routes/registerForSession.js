@@ -7,38 +7,17 @@ registerSession.route('/registration-session/').get(async (req, res) => {
 	// returns an array of sessions that are active as of today's date
 	// also return the name of the professor
 	// [
-	//     {
-	//         "sessionId": 3,
-	//         "professorId": 1,
-	//         "professorName": "test",
-	//         "startTime": "2021-12-14T10:46:48.000Z",
-	//         "endTime": "2025-12-14T10:46:48.000Z",
-	//         "currentStudents": 0,
-	//         "maxStudents": 5
-	//     }
+	//  {
+	// 	"sessionId": 1,
+	// 	"professorId": 1,
+	// 	"startTime": "2021-12-14T10:46:48.000Z",
+	// 	"endTime": "2025-12-14T10:46:48.000Z",
+	// 	"currentStudents": 0,
+	// 	"maxStudents": 5,
+	// 	"Professor": {
+	// 		"name": "test"
+	// 	}
 	// ]
-	function modelAssociationsToArray(model) {
-		const result = [];
-
-		if (typeof model !== 'object' || typeof model.associations !== 'object') {
-			throw new Error("Model should be an object with the 'associations' property.");
-		}
-
-		Object.keys(model.associations).forEach((key) => {
-			const association = {};
-
-			// all needed information in the 'options' object
-			if (model.associations[key].hasOwnProperty('options')) {
-				association[key] = model.associations[key].options;
-			}
-
-			result.push(association);
-		});
-
-		return result;
-	}
-	console.log(modelAssociationsToArray(registerSession));
-
 	try {
 		const sessions = await getAllActiveRegistrationSessions();
 		return res.status(200).json(sessions);

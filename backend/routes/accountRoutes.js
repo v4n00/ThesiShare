@@ -3,10 +3,10 @@ import professor from '../models/professor.js';
 import student from '../models/student.js';
 import { createUser, getUserByEmailAndCheckPassword } from '../models/user.js';
 
-const accounts = express.Router();
+const accountRoutes = express.Router();
 
 // student login route
-accounts.route('/student/login').get((req, res) => {
+accountRoutes.route('/student/login').get((req, res) => {
 	// request body should have these 2 parameters
 	// email - string
 	// password - string
@@ -14,7 +14,7 @@ accounts.route('/student/login').get((req, res) => {
 });
 
 // professor login route
-accounts.route('/professor/login').get((req, res) => {
+accountRoutes.route('/professor/login').get((req, res) => {
 	// request body should have these 2 parameters
 	// email - string
 	// password - string
@@ -22,7 +22,7 @@ accounts.route('/professor/login').get((req, res) => {
 });
 
 // student register route
-accounts.route('/student/register').post((req, res) => {
+accountRoutes.route('/student/register').post((req, res) => {
 	// request body should have these 4 parameters
 	// name - string
 	// email - string
@@ -32,7 +32,7 @@ accounts.route('/student/register').post((req, res) => {
 });
 
 // professor register route
-accounts.route('/professor/register').post((req, res) => {
+accountRoutes.route('/professor/register').post((req, res) => {
 	// request body should have these 4 parameters
 	// name - string
 	// email - string
@@ -84,4 +84,4 @@ async function registerHandler(req, res, userType) {
 	}
 }
 
-export default accounts;
+export default accountRoutes;

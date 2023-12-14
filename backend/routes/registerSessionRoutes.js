@@ -1,9 +1,9 @@
 import express from 'express';
 import { createRegistrationSession, getAllActiveRegistrationSessions } from '../models/registrationSession.js';
 
-const registerSession = express.Router();
+const registerSessionRoutes = express.Router();
 
-registerSession.route('/registration-session/').get(async (req, res) => {
+registerSessionRoutes.route('/registration-session/').get(async (req, res) => {
 	// returns an array of sessions that are active as of today's date
 	// also return the name of the professor
 	// [
@@ -27,7 +27,7 @@ registerSession.route('/registration-session/').get(async (req, res) => {
 	}
 });
 
-registerSession.route('/registration-session/').post(async (req, res) => {
+registerSessionRoutes.route('/registration-session/').post(async (req, res) => {
 	// request body should have these 4 parameters
 	// professorId - int
 	// startTime - int, unix time in milliseconds
@@ -52,4 +52,4 @@ registerSession.route('/registration-session/').post(async (req, res) => {
 	}
 });
 
-export default registerSession;
+export default registerSessionRoutes;

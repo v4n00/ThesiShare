@@ -11,6 +11,7 @@ accountRoutes.route('/student/login').post(async (req, res) => {
 	// email - string
 	// password - string
 	return await loginHandler(req, res, student);
+	// returns the user data
 });
 
 // professor login route
@@ -19,6 +20,7 @@ accountRoutes.route('/professor/login').post(async (req, res) => {
 	// email - string
 	// password - string
 	return await loginHandler(req, res, professor);
+	// returns the user data
 });
 
 // student register route
@@ -29,6 +31,7 @@ accountRoutes.route('/student/register').post(async (req, res) => {
 	// password - string
 	// repeatPassword - string
 	return await registerHandler(req, res, student);
+	// returns the user data
 });
 
 // professor register route
@@ -39,6 +42,7 @@ accountRoutes.route('/professor/register').post(async (req, res) => {
 	// password - string
 	// repeatPassword - string
 	return await registerHandler(req, res, professor);
+	// returns the user data
 });
 
 async function loginHandler(req, res, userType) {

@@ -32,6 +32,31 @@ const registrationSession = db.define('RegistrationSession', {
 
 export default registrationSession;
 
+export async function getRegistrationSessionById(id) {
+	const session = await registrationSession.findByPk(id);
+	if (!session) throw new Error('Registration Session not found');
+
+	return session;
+}
+
+export async function getRegistrationSessionByProfessorId(id) {
+	const today = new Date();
+	const session = await registrationSession.findOne({
+		where: {
+			professorId: id,
+			startTime: {
+				[Sequelize.Op.lt]: today,
+			},
+			endTime: {
+				[Sequelize.Op.gt]: today,
+			},
+		},
+	});
+
+	if (!session) throw new Error('Professor does not have registration');
+	return session;
+}
+
 export async function createRegistrationSession(session) {
 	const { professorId, startTime, endTime, maxStudents } = session;
 	const currentStudents = 0;

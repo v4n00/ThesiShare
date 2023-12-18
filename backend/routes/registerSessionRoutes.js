@@ -27,7 +27,7 @@ registerSessionRoutes.route('/registration-session/').get(async (req, res) => {
 	}
 });
 
-registerSessionRoutes.route('/registration-session/').post(async (req, res) => {
+registerSessionRoutes.route('/registration-session/create').post(async (req, res) => {
 	// request body should have these 4 parameters
 	// professorId - int
 	// startTime - int, unix time in milliseconds

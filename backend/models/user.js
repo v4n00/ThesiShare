@@ -5,21 +5,16 @@
 // For an example, please check out accountRoutes.js
 
 export async function createUser(model, user) {
-	let duplicateUser;
-
 	// check duplicate user, if exists, do not add to database
-	try {
-		duplicateUser = await getUserByEmail(model, user.email);
-	} catch (e) {
-		return await model.create(user);
-	}
-
+	const duplicateUser = await model.findOne({ where: { email } });
 	if (duplicateUser) throw new Error(`${model.name} already exists`);
+
+	return await model.create(user);
 }
 
 export async function getUserById(model, id) {
 	const user = await model.findByPk(id);
-	if (!user) throw new Error(`${model.name} not found`);
+	if (!user) throw new Error(`${model.name} not found with id ${id}`);
 
 	return user;
 }

@@ -27,11 +27,11 @@ function Homepage(){
             </div>
             {/* Estetizat homePhases */}
             <div className="homePhases">
-                {activePhase==1?(
+                {activePhase===1?(
                 <PhaseOne/>
-                ):activePhase==2?(
+                ):activePhase===2?(
                 <PhaseTwo/>
-                ):activePhase==3?(
+                ):activePhase===3?(
                 <PhaseThree/>
                 ):null}
             </div>

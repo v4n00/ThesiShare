@@ -1,5 +1,5 @@
 
-.loginPage{
+.registerPage{
     width: 100vw;
     height: 90vh;
     background-color: coral;
@@ -9,47 +9,47 @@
     background-size: contain;
 }
 
-.loginForm>input{
+.registerForm>input{
     height: 3vh;
     width: 16vw;
     border-radius: 20px;
 }
 
-.loginForm>label{
+.registerForm>label{
    color: black;
    font-weight: bold;
 }
 
-.loginTitle{
+.registerTitle{
     /* text-shadow:  black 1px 5px 5px; */
     font-weight: bold;
     color: black;
     font-size: 4vh;
-    margin-top: 2vh;
+    margin-top: 1vh;
 }
 
-.loginContainer{
+.registerContainer{
     width: 30vw;
-    height: 70vh;
+    height: 80vh;
     background-color: rgb(99, 252, 252);
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-direction: column;
-    gap: 10vh;
+    gap: 5vh;
     font-size: 3vh;
     border: 3px solid rgb(18, 186, 177);
     color: #D9DADB;
 }
 
-.loginForm{
+.registerForm{
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 2vh;
 }
 
-.loginBtn{
+.registerBtn{
     background-color: red;
   color: white;
   letter-spacing: 0.1rem;
@@ -64,84 +64,18 @@
   transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
   touch-action: manipulation;
   transform: translateY(0);
-  margin-top: 2vh;
-  margin-bottom: 2vh;
 }
 
-.loginBtn:hover {
+.registerBtn:hover {
 transform: translateY(-2px);
 }
 
 @media only screen and (max-width:1024px) {
-    .loginContainer{
+    .registerContainer{
         width: 80vw;
         height: 80vh;
         gap: 20vh;
         font-size: 3vh;
     }
 
-}
-
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 60px;
-    height: 34px;
-}
-
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    -webkit-transition: 0.4s;
-    transition: 0.4s;
-}
-
-.slider:before {
-    position: absolute;
-    content: '';
-    height: 26px;
-    width: 26px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    -webkit-transition: 0.4s;
-    transition: 0.4s;
-}
-
-input:checked + .slider:before {
-    -webkit-transform: translateX(26px);
-    -ms-transform: translateX(26px);
-    transform: translateX(26px);
-}
-
-.slider.round {
-    border-radius: 34px;
-}
-
-.slider.round:before {
-    border-radius: 50%;
-}
-
-.switch-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.roleLabel{
-    width: 10vw;
-    display: flex;
-    justify-content: center;
-    color: black;
 }

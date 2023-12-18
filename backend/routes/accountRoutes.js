@@ -6,39 +6,39 @@ import { createUser, getUserByEmailAndCheckPassword } from '../models/user.js';
 const accountRoutes = express.Router();
 
 // student login route
-accountRoutes.route('/student/login').get((req, res) => {
+accountRoutes.route('/student/login').post(async (req, res) => {
 	// request body should have these 2 parameters
 	// email - string
 	// password - string
-	return loginHandler(req, res, student);
+	return await loginHandler(req, res, student);
 });
 
 // professor login route
-accountRoutes.route('/professor/login').get((req, res) => {
+accountRoutes.route('/professor/login').post(async (req, res) => {
 	// request body should have these 2 parameters
 	// email - string
 	// password - string
-	return loginHandler(req, res, professor);
+	return await loginHandler(req, res, professor);
 });
 
 // student register route
-accountRoutes.route('/student/register').post((req, res) => {
+accountRoutes.route('/student/register').post(async (req, res) => {
 	// request body should have these 4 parameters
 	// name - string
 	// email - string
 	// password - string
 	// repeatPassword - string
-	return registerHandler(req, res, student);
+	return await registerHandler(req, res, student);
 });
 
 // professor register route
-accountRoutes.route('/professor/register').post((req, res) => {
+accountRoutes.route('/professor/register').post(async (req, res) => {
 	// request body should have these 4 parameters
 	// name - string
 	// email - string
 	// password - string
 	// repeatPassword - string
-	return registerHandler(req, res, professor);
+	return await registerHandler(req, res, professor);
 });
 
 async function loginHandler(req, res, userType) {

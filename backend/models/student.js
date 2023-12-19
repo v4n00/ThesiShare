@@ -31,3 +31,13 @@ const student = db.define('Student', {
 });
 
 export default student;
+
+export async function checkIfStudentHasAssignedProfessor(studentId) {
+	try {
+		const student = await student.findByPk(studentId);
+
+		return student && student.assignedProfessorId != null;
+	} catch (e) {
+		throw new Error('Student not found');
+	}
+}

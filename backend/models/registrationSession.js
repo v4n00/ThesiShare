@@ -72,7 +72,7 @@ export async function createRegistrationSession(session) {
 		},
 	});
 
-	if (duplicateSession) throw new Error('A registration session in the same timeframe already exists.');
+	if (duplicateSession) throw new Error('A registration session in the same timeframe already exists');
 	try {
 		return await registrationSession.create({ professorId, startTime, endTime, currentStudents, maxStudents });
 	} catch (e) {

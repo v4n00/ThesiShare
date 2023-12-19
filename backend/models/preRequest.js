@@ -71,18 +71,17 @@ export async function getPreRequestsByStudentId(id) {
 export async function getPreRequestsFromRegistrationSessionByProfessorId(id) {
 	try {
 		let session = await getRegistrationSessionByProfessorId(id);
-		let requests = await getAllPendingPreRequestsBySessionId(session.dataValues.sessionId);
+		let requests = await getPreRequestsBySessionId(session.dataValues.sessionId);
 		return requests;
 	} catch (e) {
 		throw e;
 	}
 }
 
-export async function getAllPendingPreRequestsBySessionId(id) {
+export async function getPreRequestsBySessionId(id) {
 	const requests = await preRequest.findAll({
 		where: {
 			sessionId: id,
-			status: 'pending',
 		},
 		include: [
 			{

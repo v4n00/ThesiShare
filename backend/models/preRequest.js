@@ -34,21 +34,61 @@ const preRequest = db.define('PreRequest', {
 
 export default preRequest;
 
+export async function rejectPreRequest(id, justification) {
+	try {
+		let request = await getPreRequestById(id);
+		if (request.dataValues.status != 'pending') throw new Error('Cannot edit non-pending PreRequest');
+
+		request.status = 'rejected';
+		request.justification = justification;
+		return await request.save();
+	} catch (e) {
+		throw e;
+	}
+}
+
+export async function acceptPreRequest(id) {
+	try {
+		let request = await getPreRequestById(id);
+		if (request.dataValues.status != 'pending') throw new Error('Cannot edit non-pending PreRequest');
+
+		let user = await getUserById(student, request.dataValues.studentId);
+		let session = await getRegistrationSessionById(request.dataValues.sessionId);
+
+		request.status = 'accepted';
+		user.assignedProfessorId = session.dataValues.professorId;
+		await user.save();
+		return await request.save();
+	} catch (e) {
+		throw e;
+	}
+}
+
+export async function getPreRequestsByStudentId(id) {
+	return await preRequest.findAll({ where: { studentId: id } });
+}
+
 export async function getPreRequestsFromRegistrationSessionByProfessorId(id) {
 	try {
 		let session = await getRegistrationSessionByProfessorId(id);
-		let requests = await getAllPreRequestsBySessionId(session.dataValues.sessionId);
+		let requests = await getAllPendingPreRequestsBySessionId(session.dataValues.sessionId);
 		return requests;
 	} catch (e) {
 		throw e;
 	}
 }
 
-export async function getAllPreRequestsBySessionId(id) {
+export async function getAllPendingPreRequestsBySessionId(id) {
 	const requests = await preRequest.findAll({
 		where: {
 			sessionId: id,
+			status: 'pending',
 		},
+		include: [
+			{
+				model: student,
+			},
+		],
 	});
 	return requests;
 }

@@ -102,3 +102,10 @@ export async function getAllActiveRegistrationSessions() {
 	if (activeSessions.length === 0) throw new Error('No active registrations found');
 	return activeSessions;
 }
+
+export async function verifyRegistrationSessionHasSlots(sessionId) {
+	let session = await getRegistrationSessionById(sessionId);
+	if (session.dataValues.currentStudents >= session.dataValues.maxStudents) throw new Error('Session is full');
+
+	return true;
+}

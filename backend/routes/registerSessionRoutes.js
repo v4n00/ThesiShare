@@ -1,9 +1,10 @@
 import express from 'express';
+import { verifyProfessor, verifyStudent } from '../middleware/authMiddleware.js';
 import { createRegistrationSession, getAllActiveRegistrationSessions } from '../models/registrationSession.js';
 
 const registerSessionRoutes = express.Router();
 
-registerSessionRoutes.route('/registration-session/').get(async (req, res) => {
+registerSessionRoutes.route('/registration-session/').get(verifyStudent, async (req, res) => {
 	// returns an array of sessions that are active as of today's date
 	// also return the name of the professor
 	// [
@@ -27,7 +28,7 @@ registerSessionRoutes.route('/registration-session/').get(async (req, res) => {
 	}
 });
 
-registerSessionRoutes.route('/registration-session/create').post(async (req, res) => {
+registerSessionRoutes.route('/registration-session/create').post(verifyProfessor, async (req, res) => {
 	// request body should have these 4 parameters
 	// professorId - int
 	// startTime - int, unix time in milliseconds

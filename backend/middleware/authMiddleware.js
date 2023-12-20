@@ -24,6 +24,7 @@ export const verifyToken = (req, res, next) => {
 	});
 };
 
+// verify if the token belongs to a student
 export const verifyStudent = (req, res, next) => {
 	verifyToken(req, res, () => {
 		if (req.decodedToken.role === 'Student') {
@@ -34,6 +35,7 @@ export const verifyStudent = (req, res, next) => {
 	});
 };
 
+// verify if the token belongs to a professor
 export const verifyProfessor = (req, res, next) => {
 	verifyToken(req, res, () => {
 		if (req.decodedToken.role === 'Professor') {

@@ -1,4 +1,5 @@
 import express from 'express';
+import { verifyProfessor, verifyStudent, verifyToken } from '../middleware/authMiddleware.js';
 import { acceptPreRequest, createPreRequest, getPreRequestsByStudentId, getPreRequestsFromRegistrationSessionByProfessorId, rejectPreRequest } from '../models/preRequest.js';
 
 const preRequestRoutes = express.Router();
@@ -10,7 +11,7 @@ const preRequestRoutes = express.Router();
 // 'rejected'
 
 // accept a prerequest
-preRequestRoutes.route('/prerequest/accept').put(async (req, res) => {
+preRequestRoutes.route('/prerequest/accept').put(verifyProfessor, async (req, res) => {
 	// returns the preRequest data
 	// request body should have these 1 parameter
 	// requestId - int
@@ -27,7 +28,7 @@ preRequestRoutes.route('/prerequest/accept').put(async (req, res) => {
 });
 
 // reject a prerequest
-preRequestRoutes.route('/prerequest/reject').put(async (req, res) => {
+preRequestRoutes.route('/prerequest/reject').put(verifyProfessor, async (req, res) => {
 	// returns the preRequest data
 	// request body should have these 2 parameters
 	// requestId - int
@@ -45,7 +46,7 @@ preRequestRoutes.route('/prerequest/reject').put(async (req, res) => {
 });
 
 // returns all preRequests for a given student id
-preRequestRoutes.route('/prerequest/student/:studentId').get(async (req, res) => {
+preRequestRoutes.route('/prerequest/student/:studentId').get(verifyStudent, async (req, res) => {
 	// returns all preRequests (array) for a given student id
 	// request params should have 1 parameter
 	// studentId - int
@@ -62,7 +63,7 @@ preRequestRoutes.route('/prerequest/student/:studentId').get(async (req, res) =>
 });
 
 // returns all preRequests for a given professor id
-preRequestRoutes.route('/prerequest/professor/:professorId').get(async (req, res) => {
+preRequestRoutes.route('/prerequest/professor/:professorId').get(verifyProfessor, async (req, res) => {
 	// returns all preRequests (array) for a given professor id
 	// request params should have 1 parameter
 	// professorId - int
@@ -79,7 +80,7 @@ preRequestRoutes.route('/prerequest/professor/:professorId').get(async (req, res
 });
 
 // get preRequest by id
-preRequestRoutes.route('/prerequest/:id').get(async (req, res) => {
+preRequestRoutes.route('/prerequest/:id').get(verifyToken, async (req, res) => {
 	// returns the preRequest data
 	// request params should have 1 parameter
 	// id - int
@@ -96,7 +97,7 @@ preRequestRoutes.route('/prerequest/:id').get(async (req, res) => {
 });
 
 // create preRequest
-preRequestRoutes.route('/prerequest').post(async (req, res) => {
+preRequestRoutes.route('/prerequest').post(verifyStudent, async (req, res) => {
 	// returns the preRequest data
 	// request body should have these 3 parameters
 	// studentId - int

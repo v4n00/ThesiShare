@@ -1,6 +1,6 @@
 import { Sequelize } from 'sequelize';
 import db from '../config/database.js';
-import { getRegistrationSessionById, getRegistrationSessionByProfessorId } from './registrationSession.js';
+import { getRegistrationSessionById, getRegistrationSessionByProfessorId, verifyRegistrationSessionHasSlots } from './registrationSession.js';
 import student from './student.js';
 import { getUserById } from './user.js';
 
@@ -54,6 +54,12 @@ export async function acceptPreRequest(id) {
 
 		let user = await getUserById(student, request.dataValues.studentId);
 		let session = await getRegistrationSessionById(request.dataValues.sessionId);
+
+		// verify that session still has slots
+		if (await verifyRegistrationSessionHasSlots(session.dataValues.sessionId)) {
+			session.currentStudents += 1;
+			await session.save();
+		}
 
 		request.status = 'accepted';
 		user.assignedProfessorId = session.dataValues.professorId;
@@ -111,7 +117,14 @@ export async function createPreRequest(request) {
 		foundSession = (await getRegistrationSessionById(sessionId)).dataValues;
 		foundStudent = (await getUserById(student, studentId)).dataValues;
 	} catch (e) {
-		throw new Error(e.message);
+		throw e;
+	}
+
+	// verify that session still has slots
+	try {
+		await verifyRegistrationSessionHasSlots(foundSession.dataValues.sessionId);
+	} catch (e) {
+		throw e;
 	}
 
 	// check if student already has professor

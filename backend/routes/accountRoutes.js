@@ -1,3 +1,4 @@
+import bcrypt from 'bcrypt';
 import express from 'express';
 import professor from '../models/professor.js';
 import student from '../models/student.js';
@@ -46,7 +47,7 @@ accountRoutes.route('/professor/register').post(async (req, res) => {
 });
 
 async function loginHandler(req, res, userType) {
-	const { email, password } = req.body;
+	let { email, password } = req.body;
 
 	// check malformed request
 	if (!email || !password) return res.status(400).json('Bad Request');
@@ -61,7 +62,7 @@ async function loginHandler(req, res, userType) {
 }
 
 async function registerHandler(req, res, userType) {
-	const { name, email, password, repeatPassword } = req.body;
+	let { name, email, password, repeatPassword } = req.body;
 
 	if (!name || !email || !password || !repeatPassword) return res.status(400).json('Bad Request');
 
@@ -79,6 +80,10 @@ async function registerHandler(req, res, userType) {
 	if (password.length < 8) {
 		return res.status(400).json('Password must be at least 8 characters long');
 	}
+
+	// encrypt passwords
+	const salt = await bcrypt.genSalt(10);
+	password = await bcrypt.hash(password, salt);
 
 	try {
 		const user = await createUser(userType, { name, email, password });

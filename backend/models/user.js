@@ -1,3 +1,4 @@
+import bcrypt from 'bcrypt';
 // This class is used as the method to access both the Professor and Student table
 // When calling a method from this file, specify the 'model' argument as the model name
 // example: getUserById(Professor, 5);
@@ -6,7 +7,7 @@
 
 export async function createUser(model, user) {
 	// check duplicate user, if exists, do not add to database
-	const duplicateUser = await model.findOne({ where: { email } });
+	const duplicateUser = await model.findOne({ where: { email: user.email } });
 	if (duplicateUser) throw new Error(`${model.name} already exists`);
 
 	return await model.create(user);
@@ -23,7 +24,10 @@ export async function getUserByEmailAndCheckPassword(model, email, password) {
 	try {
 		const user = await getUserByEmail(model, email);
 
-		if (user.password !== password) throw new Error(`${model.name} password does not match`);
+		// check hashed password
+		const validPassword = await bcrypt.compare(password, user.password);
+		if (!validPassword) throw new Error(`${model.name} password does not match`);
+
 		return user;
 	} catch (e) {
 		throw e;

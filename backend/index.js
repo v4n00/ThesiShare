@@ -31,5 +31,6 @@ app.use('/api', preRequestRoutes);
 app.use('/api', mainRequestRoutes);
 
 // start the server
-app.listen(port);
-console.log(`Backend is running at http://localhost:${port}/`);
+app.listen(port, () => {
+	console.log(`Backend is running at http://localhost:${port}/`);
+});

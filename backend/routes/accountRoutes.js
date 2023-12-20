@@ -1,5 +1,7 @@
 import bcrypt from 'bcrypt';
 import express from 'express';
+import jwt from 'jsonwebtoken';
+import { JWT_KEY } from '../config/const.js';
 import professor from '../models/professor.js';
 import student from '../models/student.js';
 import { createUser, getUserByEmailAndCheckPassword } from '../models/user.js';
@@ -8,7 +10,16 @@ const accountRoutes = express.Router();
 
 // student login route
 accountRoutes.route('/student/login').post(async (req, res) => {
-	// returns the user data
+	// returns the user data and a token
+	// {
+	// 	"user": {
+	// 		"studentId": 2,
+	// 		"name": "Student Test",
+	// 		"email": "test@gmail.com",
+	// 		"password": "$2b$10$QkMip35R4Nknfg5gsjGVKOY5ADiX.wLKWzLAvjBehKZoIAeCpEpwS"
+	// 	},
+	// 	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiUHJvZmVzc29yIiwiZW1haWwiOiJ0ZXN0QGdtYWlsLmNvbSIsIm5hbWUiOiJQcm9mZXNzb3IgVGVzdCIsImlhdCI6MTcwMzA4NTY1MywiZXhwIjoxNzAzMDg1NjY4fQ._1tw74w_C9wJQxXpK3UePn5_i0wdbWo0rzBHZWxypCE"
+	// }
 	// request body should have these 2 parameters
 	// email - string
 	// password - string
@@ -17,7 +28,16 @@ accountRoutes.route('/student/login').post(async (req, res) => {
 
 // professor login route
 accountRoutes.route('/professor/login').post(async (req, res) => {
-	// returns the user data
+	// returns the user data and a token
+	// {
+	// 	"user": {
+	// 		"professorId": 2,
+	// 		"name": "Professor Test",
+	// 		"email": "test@gmail.com",
+	// 		"password": "$2b$10$QkMip35R4Nknfg5gsjGVKOY5ADiX.wLKWzLAvjBehKZoIAeCpEpwS"
+	// 	},
+	// 	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiUHJvZmVzc29yIiwiZW1haWwiOiJ0ZXN0QGdtYWlsLmNvbSIsIm5hbWUiOiJQcm9mZXNzb3IgVGVzdCIsImlhdCI6MTcwMzA4NTY1MywiZXhwIjoxNzAzMDg1NjY4fQ._1tw74w_C9wJQxXpK3UePn5_i0wdbWo0rzBHZWxypCE"
+	// }
 	// request body should have these 2 parameters
 	// email - string
 	// password - string
@@ -46,6 +66,26 @@ accountRoutes.route('/professor/register').post(async (req, res) => {
 	return await registerHandler(req, res, professor);
 });
 
+// validate token route
+accountRoutes.route('/validate-token').post(async (req, res) => {
+	try {
+		const token = req.body.token;
+		if (!token) {
+			return res.status(401).json('No token provided');
+		}
+		jwt.verify(token, JWT_KEY, (err, decodedToken) => {
+			if (err) {
+				return res.status(401).json('Invalid token');
+			}
+			console.log(decodedToken);
+			return res.status(200).json({ message: 'Valid token', token, role: decodedToken.role, userId: decodedToken.userId });
+		});
+	} catch (e) {
+		console.warn(e.stack);
+		return res.status(500).json(e.message);
+	}
+});
+
 async function loginHandler(req, res, userType) {
 	let { email, password } = req.body;
 
@@ -54,7 +94,7 @@ async function loginHandler(req, res, userType) {
 
 	try {
 		const user = await getUserByEmailAndCheckPassword(userType, email, password);
-		return res.status(200).json(user);
+		return res.status(200).json({ user: user, token: generateToken(user, userType) });
 	} catch (e) {
 		console.warn(e.stack);
 		return res.status(500).json(e.message);
@@ -91,6 +131,22 @@ async function registerHandler(req, res, userType) {
 	} catch (e) {
 		return res.status(500).json(e.message);
 	}
+}
+
+function generateToken(user, userType) {
+	return jwt.sign(
+		{
+			userId: user.professorId || user.studentId,
+			role: userType.name, // capitalised, e.g. 'Student' or 'Professor'
+			email: user.email,
+			name: user.name,
+		},
+		JWT_KEY,
+		{
+			// edit this for token expiration
+			expiresIn: '24h',
+		}
+	);
 }
 
 export default accountRoutes;

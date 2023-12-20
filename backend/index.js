@@ -1,5 +1,6 @@
 import cors from 'cors';
 import express from 'express';
+import { PORT } from './config/const.js';
 import initDatabase from './config/initDatabase.js';
 import accountRoutes from './routes/accountRoutes.js';
 import mainRequestRoutes from './routes/mainRequestRoutes.js';
@@ -7,7 +8,6 @@ import preRequestRoutes from './routes/preRequestRoutes.js';
 import registerSessionRoutes from './routes/registerSessionRoutes.js';
 
 // configuration
-let port = 8080;
 let app = express();
 app.use(express.json());
 app.use(
@@ -31,6 +31,6 @@ app.use('/api', preRequestRoutes);
 app.use('/api', mainRequestRoutes);
 
 // start the server
-app.listen(port, () => {
-	console.log(`Backend is running at http://localhost:${port}/`);
+app.listen(PORT, () => {
+	console.log(`Backend is running at http://localhost:${PORT}/`);
 });

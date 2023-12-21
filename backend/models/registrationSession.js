@@ -82,7 +82,7 @@ export async function createRegistrationSession(session) {
 
 export async function getAllActiveRegistrationSessions() {
 	const today = new Date();
-	const activeSessions = await registrationSession.findOne({
+	const activeSessions = await registrationSession.findAll({
 		where: {
 			startTime: {
 				[Sequelize.Op.lte]: today,

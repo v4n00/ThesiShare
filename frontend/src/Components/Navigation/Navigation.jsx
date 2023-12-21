@@ -10,7 +10,7 @@ function Navigation(){
                     ThesiShare
                 </div>
                 <div className="navButtons">
-                    <div className="logout" onClick={()=>{navigate("/login")}}>
+                    <div className="logout" onClick={()=>{navigate("/login"); localStorage.removeItem('token')}}>
                         Logout
                     </div>
                 </div>

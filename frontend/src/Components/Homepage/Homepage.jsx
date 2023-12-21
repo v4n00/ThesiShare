@@ -4,7 +4,7 @@ import PhaseOne from "../Phases/PhaseOne/PhaseOne";
 import PhaseTwo from "../Phases/PhaseTwo/PhaseTwo";
 import PhaseThree from "../Phases/PhaseThree/PhaseThree";
 
-function Homepage(){
+function Homepage({onLoginSuccess}){
     const [activePhase, setActivePhase] = useState();
 
     return(

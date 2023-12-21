@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
 import axios from 'axios';
@@ -9,19 +9,40 @@ function Login({ onLoginSuccess }) {
   const [password, setPassword] = useState("");
   const [isProfessor, setIsProfessor] = useState(false);
 
+  const navigate = useNavigate();
+
+
+  useEffect(() => {
+    const checkTokenAndRedirect = async () => {
+      const storedToken = localStorage.getItem("token");
+
+      if (storedToken) {
+        try {
+          // TO DO check the Token
+
+          onLoginSuccess();
+          navigate("/home");
+        } catch (error) {
+          console.error("Invalid token:", error);
+        }
+      }
+    };
+
+    checkTokenAndRedirect();
+  }, [onLoginSuccess, navigate]);
+  
   const handleToggle = () => {
     setIsProfessor(!isProfessor);
   };
-
-  const navigate = useNavigate();
 
   const handleLogin = (event) => {
     event.preventDefault();
     let routeLink = isProfessor === true ? 'professor' : 'student';
     axios.post(`${url}${routeLink}/login`, { email, password }, header)
       .then((res) => {
-        console.log(res);
+        console.log(res.data.token);
         onLoginSuccess();
+        localStorage.setItem("token", res.data.token);
         navigate('/home');
       })
       .catch((err) => {

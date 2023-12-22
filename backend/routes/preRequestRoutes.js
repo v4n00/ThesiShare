@@ -1,6 +1,6 @@
 import express from 'express';
 import { verifyProfessor, verifyStudent, verifyToken } from '../middleware/authMiddleware.js';
-import { acceptPreRequest, createPreRequest, getPreRequestsByStudentId, getPreRequestsFromRegistrationSessionByProfessorId, rejectPreRequest } from '../models/preRequest.js';
+import { acceptPreRequest, createPreRequest, getPreRequestsByStudentId, getPreRequestsFromRegistrationSessionByProfessorId, rejectPreRequest, getPreRequestsBySessionId } from '../models/preRequest.js';
 
 const preRequestRoutes = express.Router();
 
@@ -78,6 +78,24 @@ preRequestRoutes.route('/prerequest/professor/:professorId').get(verifyProfessor
 		return res.status(500).json(e.message);
 	}
 });
+
+// get preRequest by session id
+preRequestRoutes.route('/prerequest/:sessionId').get(verifyProfessor, async (req, res) => {
+    // returns all preRequests (array) for a given session id
+    // request params should have 1 parameter
+    // sessionId - int
+    const sessionId = req.params.sessionId;
+    if (!sessionId) return res.status(400).json('Bad Request');
+
+    try {
+        let requests = await getPreRequestsBySessionId(sessionId);
+        return res.status(200).json(requests);
+    } catch (e) {
+        console.warn(e.stack);
+        return res.status(500).json(e.message);
+    }
+});
+
 
 // get preRequest by id
 preRequestRoutes.route('/prerequest/:id').get(verifyToken, async (req, res) => {

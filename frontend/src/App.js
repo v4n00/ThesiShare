@@ -5,6 +5,7 @@ import Login from "./Components/Login/Login";
 import Navigation from "./Components/Navigation/Navigation";
 import Homepage from "./Components/Homepage/Homepage";
 import Register from "./Components/Register/Register";
+import HomepageProf from './Components/HomepageProf/HomepageProf';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -19,6 +20,7 @@ function App() {
         
         <Route path="register" element={<Register/>} />
         <Route path="home" element={<ProtectedRoute component={Homepage} isLoggedIn={isLoggedIn} />} />
+        <Route path="home-prof" element={<ProtectedRoute component={HomepageProf} isLoggedIn={isLoggedIn} />} />
         <Route index element={<Login onLoginSuccess={onLoginSuccess}/>} />
         <Route path='login' element={<Login onLoginSuccess={onLoginSuccess}/>} />
       </Route>
@@ -39,5 +41,6 @@ const ProtectedRoute = ({ component: Component, isLoggedIn }) => {
     return <Navigate to="/login" replace />;
   }
 };
+
 
 export default App;

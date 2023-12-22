@@ -18,12 +18,22 @@ function Login({ onLoginSuccess }) {
 
       if (storedToken) {
         try {
-          // TO DO check the Token
+          axios.post("http://localhost:8080/api/validate-token", {token:localStorage.getItem("token")})
+          .then(res =>{
+              if(res.data.role == "Professor")
+              {
+                onLoginSuccess();
+                navigate("/home-prof");
+              }
+              else
+              {
+                onLoginSuccess();
+                navigate("/home");
+              }
+          })
 
-          onLoginSuccess();
-          navigate("/home");
         } catch (error) {
-          console.error("Invalid token:", error);
+          console.error("No token available");
         }
       }
     };
@@ -43,7 +53,10 @@ function Login({ onLoginSuccess }) {
         console.log(res.data.token);
         onLoginSuccess();
         localStorage.setItem("token", res.data.token);
-        navigate('/home');
+        if(isProfessor == false)
+          navigate('/home');
+        else
+          navigate('/home-prof');
       })
       .catch((err) => {
         console.log(err);

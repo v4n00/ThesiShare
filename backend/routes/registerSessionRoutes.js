@@ -1,6 +1,6 @@
 import express from 'express';
 import { verifyProfessor, verifyStudent } from '../middleware/authMiddleware.js';
-import { createRegistrationSession, getAllActiveRegistrationSessions } from '../models/registrationSession.js';
+import { createRegistrationSession, getAllActiveRegistrationSessions, getAllRegistrationSessionByProfessorId } from '../models/registrationSession.js';
 
 const registerSessionRoutes = express.Router();
 
@@ -26,6 +26,17 @@ registerSessionRoutes.route('/registration-session/').get(verifyStudent, async (
 		console.warn(e.stack);
 		return res.status(500).json(e.message);
 	}
+});
+
+registerSessionRoutes.route('/registration-session/:professorId').get(verifyProfessor, async (req, res) => {
+    // returns an array of sessions for a professor's id
+    try {
+        const sessions = await getAllRegistrationSessionByProfessorId(req.params.professorId);
+        return res.status(200).json(sessions);
+    } catch (e) {
+        console.warn(e.stack);
+        return res.status(500).json(e.message);
+    }
 });
 
 registerSessionRoutes.route('/registration-session/create').post(verifyProfessor, async (req, res) => {

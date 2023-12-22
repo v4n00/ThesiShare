@@ -70,7 +70,7 @@ function PhaseOne(){
             <select className="dropdownTeachers" onChange={(e)=>{setSelectedSession(e.target.value); console.log(e.target.value)}}>
                 {professors.map((professor)=>(
                     <option key={professor.professorId} value={professor.sessionId}>
-                        {professor.Professor.name}
+                        {"Session " + professor.sessionId + " Professor " + professor.Professor.name}
                     </option>
                 ))}
             </select>

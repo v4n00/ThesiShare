@@ -1,0 +1,29 @@
+.homeProfPhases{
+    display: flex;
+    overflow: hidden;
+}
+
+.homePhaseContent{
+}
+
+.homePhaseContainer{
+    overflow: hidden;
+    overflow-y: scroll;
+    width: 33vw;
+}
+
+.phaseProf{
+    width: 33vw;
+    height: 6vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#phasePre{
+    display: none;
+}
+
+#phaseMain{
+    display: none;
+}

@@ -103,6 +103,17 @@ export async function getAllActiveRegistrationSessions() {
 	return activeSessions;
 }
 
+export async function getAllRegistrationSessionByProfessorId(id) {
+    const sessions = await registrationSession.findAll({
+        where: {
+            professorId: id,
+        },
+    });
+
+    if (sessions.length === 0) throw new Error('Professor does not have registration');
+    return sessions;
+}
+
 export async function verifyRegistrationSessionHasSlots(sessionId) {
 	let session = await getRegistrationSessionById(sessionId);
 	if (session.dataValues.currentStudents >= session.dataValues.maxStudents) throw new Error('Session is full');

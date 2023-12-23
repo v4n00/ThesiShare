@@ -15,9 +15,10 @@ preRequestRoutes.route('/prerequest/accept').put(verifyProfessor, async (req, re
 	// returns the preRequest data
 	// request body should have these 1 parameter
 	// requestId - int
-	const { requestId } = req.body;
+	const requestId = req.body.id;
+	
 	if (!requestId) return res.status(400).json('Bad Request');
-
+	
 	try {
 		let request = await acceptPreRequest(requestId);
 		return res.status(200).json(request);

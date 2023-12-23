@@ -2,16 +2,19 @@ import { useEffect, useState } from "react"
 import "./HomepageProf.css"
 import Session from "../PhasesProf/Session/Session";
 import PreRequest from "../PhasesProf/PreRequest/PreRequest"
+import MainRequest from "../PhasesProf/MainRequest/MainRequest";
 import axios from "axios";
+import { url, header } from "../Constants.js";
 
 function HomepageProf({onLoginSuccess}){
     const [sessions, setSessions] = useState([]);
     const [preRequests, setPreRequests] = useState([]);
+    const [mainRequest, setMainRequest] = useState({});
 
     useEffect(() => {
         const fetchData = async () => {
           try {
-            const response = await axios.post("http://localhost:8080/api/validate-token", {
+            const response = await axios.post(`${url}validate-token`, {
               token: localStorage.getItem("token"),
             });
 
@@ -47,12 +50,48 @@ function HomepageProf({onLoginSuccess}){
         })
     }
 
-    const handlePreRequest = (studentIdForPrereq, action) => {
-        console.log(`Clicked on prereq with ID ${studentIdForPrereq}, Action: ${action}`);
+    const handlePreRequest = (preRequestId, studentIdForPrereq, action, justification, status) => {
+        console.log(`Clicked on student with ID ${studentIdForPrereq}, Action: ${action}, prereqid: ${preRequestId}, justi ${justification}, status ${status}`);
         
         //accept/reject students
+        if(action==="accept")
+        {
+            console.log("Acc", localStorage.getItem("token"), preRequestId)
+            axios.put("http://localhost:8080/api/prerequest/accept", { id: preRequestId }, {
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+              })
+            .then((res)=>{
+                console.log(res);
+            })
+        }
+        else if(action==="reject" && justification)
+        {
+            console.log("Rej", localStorage.getItem("token"), preRequestId)
+            axios.put("http://localhost:8080/api/prerequest/reject", { requestId: preRequestId, justification: justification }, {
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+              })
+            .then((res)=>{
+                console.log(res);
+            })
+        }
 
         //get Main request by student id if the student is accepted
+        if(status=='accepted')
+        {
+          axios.get(`${url}mainrequest/student/${studentIdForPrereq}`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          })
+          .then((res)=>{
+            console.log(res.data)
+            setMainRequest(res.data);
+          })
+        }
     };
       
 
@@ -91,6 +130,8 @@ function HomepageProf({onLoginSuccess}){
                         {preRequests.map((preRequest, index) =>(
                             <PreRequest
                             key={index}
+                            status={preRequest.status}
+                            preRequestId={preRequest.preRequestId}
                             studentId={preRequest.studentId}
                             studentName = {preRequest.Student.name}
                             prereqTitle={preRequest.title}
@@ -101,7 +142,10 @@ function HomepageProf({onLoginSuccess}){
                 </div>
                 <div className="homePhaseContainer" id="phaseMain">
                     <div className="homePhaseContent">
-
+                          <MainRequest
+                            mainReqId={mainRequest.mainRequestId}
+                            status={mainRequest.status}
+                          />
                     </div>
                 </div>
             </div>

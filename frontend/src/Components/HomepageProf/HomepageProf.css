@@ -9,7 +9,7 @@
 .homePhaseContainer{
     overflow: hidden;
     overflow-y: scroll;
-    width: 33vw;
+    width: 34vw;
 }
 
 .phaseProf{
@@ -26,4 +26,5 @@
 
 #phaseMain{
     display: none;
+    overflow-y: none;
 }

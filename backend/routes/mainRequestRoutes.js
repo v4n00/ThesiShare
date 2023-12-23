@@ -52,7 +52,7 @@ mainRequestRoutes.route('/mainrequest/reject').put(verifyProfessor, async (req, 
 });
 
 // get mainRequest for given studentId
-mainRequestRoutes.route('/mainrequest/student/:studentId').get(verifyStudent, async (req, res) => {
+mainRequestRoutes.route('/mainrequest/student/:studentId').get(async (req, res) => {
 	// returns the mainRequest data for a student id
 	// request params should have 1 parameter
 	// studentId - int

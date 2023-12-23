@@ -120,8 +120,6 @@ export async function createPreRequest(request) {
 		throw e;
 	}
 
-	console.log(foundSession.sessionId)
-
 	// verify that session still has slots
 	try {
 		await verifyRegistrationSessionHasSlots(foundSession.sessionId);
@@ -132,8 +130,6 @@ export async function createPreRequest(request) {
 	// check if student already has professor
 	if (foundStudent.assignedProfessorId) throw new Error('Student already has an assigned professor');
 
-	console.log("Found Student ID:", foundStudent.studentId);
-	console.log("Found Session ID:", foundSession.sessionId);
 	// check if student already has a prerequest to the professor
 	let duplicatePreRequest = await preRequest.findOne({
 		where: {
@@ -141,7 +137,6 @@ export async function createPreRequest(request) {
 			sessionId: foundSession.sessionId,
 		},
 	});
-	console.log("Duplicate PreRequest:", duplicatePreRequest);
 	if (duplicatePreRequest) throw new Error('Student already sent a prerequest to this session');
 
 	try {

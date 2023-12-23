@@ -77,7 +77,6 @@ accountRoutes.route('/validate-token').post(async (req, res) => {
 			if (err) {
 				return res.status(401).json('Invalid token');
 			}
-			console.log(decodedToken);
 			return res.status(200).json({ message: 'Valid token', token, role: decodedToken.role, userId: decodedToken.userId });
 		});
 	} catch (e) {

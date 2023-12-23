@@ -83,6 +83,24 @@ export async function getMainRequestById(id) {
 	return request;
 }
 
+export async function updateMainRequestWithProfessorFile({ professorFilePath, id }) {
+	try {
+		let request = await mainRequest.findByPk(id);
+
+		if (!request) {
+		throw new Error('Main request not found');
+		}
+
+		request.professorFilePath = professorFilePath;
+
+		await request.save();
+
+		return request;
+	} catch (error) {
+		throw error;
+	}
+}
+
 export async function createMainRequest(request) {
 	const { studentFilePath, studentId, professorId } = request;
 
@@ -95,6 +113,7 @@ export async function createMainRequest(request) {
 	} catch (e) {
 		throw new Error(e.message);
 	}
+
 
 	// check for duplicate session
 	let duplicateSession = await mainRequest.findOne({

@@ -4,7 +4,7 @@ import Session from "../PhasesProf/Session/Session";
 import PreRequest from "../PhasesProf/PreRequest/PreRequest"
 import MainRequest from "../PhasesProf/MainRequest/MainRequest";
 import axios from "axios";
-import { url, header } from "../Constants.js";
+import { url } from "../Constants.js";
 
 function HomepageProf({onLoginSuccess}){
     const [sessions, setSessions] = useState([]);

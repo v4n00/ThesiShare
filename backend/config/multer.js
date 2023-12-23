@@ -4,7 +4,7 @@ import path from 'path';
 // setup storage for student PDFs
 const studentStorage = multer.diskStorage({
 	destination: function (req, file, cb) {
-		cb(null, '../uploads/student');
+		cb(null, './uploads/student');
 	},
 	filename: function (req, file, cb) {
 		cb(null, 'student-' + Date.now() + path.extname(file.originalname));
@@ -14,7 +14,7 @@ const studentStorage = multer.diskStorage({
 // setup storage for professor PDFs
 const professorStorage = multer.diskStorage({
 	destination: function (req, file, cb) {
-		cb(null, '../uploads/professor');
+		cb(null, './uploads/professor');
 	},
 	filename: function (req, file, cb) {
 		cb(null, 'professor-' + Date.now() + path.extname(file.originalname));

@@ -34,11 +34,10 @@ const mainRequest = db.define('MainRequest', {
 
 export default mainRequest;
 
-export async function acceptMainRequest(id, professorFilePath) {
+export async function acceptMainRequest(id) {
 	try {
 		let request = await getMainRequestById(id);
 
-		request.professorFilePath = professorFilePath;
 		request.status = 'accepted';
 		return await request.save();
 	} catch (e) {
@@ -92,6 +91,24 @@ export async function updateMainRequestWithProfessorFile({ professorFilePath, id
 		}
 
 		request.professorFilePath = professorFilePath;
+
+		await request.save();
+
+		return request;
+	} catch (error) {
+		throw error;
+	}
+}
+
+export async function updateMainRequestWithStudentFile({ studentFilePath, id }) {
+	try {
+		let request = await mainRequest.findByPk(id);
+
+		if (!request) {
+		throw new Error('Main request not found');
+		}
+
+		request.studentFilePath = studentFilePath;
 
 		await request.save();
 

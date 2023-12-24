@@ -19,8 +19,10 @@ function PhaseThree(){
             },
           })
           .then((mainRequest) => {
-            console.log(mainRequest)
-            setCurrentMainRequest(mainRequest.data.mainRequestId)
+            setCurrentMainRequest(mainRequest.data)
+          })
+          .catch((err)=>{
+            console.log(err)
           });
         } 
         catch (err) {
@@ -34,7 +36,7 @@ function PhaseThree(){
     const handleDownload = () =>{
         const downloadFile = async () => {
             try {
-              const response = await axios.get(`${url}/mainrequest/downloadProfessorFile/${currentMainRequest}`, {
+              const response = await axios.get(`${url}/mainrequest/downloadProfessorFile/${currentMainRequest.mainRequestId}`, {
                 headers: {
                   Authorization: `Bearer ${localStorage.getItem('token')}`,
                 },
@@ -63,7 +65,12 @@ function PhaseThree(){
 
     return(
         <div className="phaseThreeContainer">
+            {
+            (currentMainRequest && currentMainRequest?.status == "accepted")?
             <button onClick={handleDownload}>Download signed Request</button>
+            :
+            <div>You didnt send any request or the professor didnt accept it.</div>
+            }
         </div>
     )
 }

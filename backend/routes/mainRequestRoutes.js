@@ -1,6 +1,6 @@
 import express from 'express';
 import { verifyProfessor, verifyStudent, verifyToken } from '../middleware/authMiddleware.js';
-import { acceptMainRequest, createMainRequest, getMainRequestById, getMainRequestByStudentId, getMainRequestsByProfessorId, rejectMainRequest, updateMainRequestWithProfessorFile } from '../models/mainRequest.js';
+import { acceptMainRequest, createMainRequest, getMainRequestById, getMainRequestByStudentId, getMainRequestsByProfessorId, rejectMainRequest, updateMainRequestWithProfessorFile, updateMainRequestWithStudentFile } from '../models/mainRequest.js';
 import { uploadProfessor, uploadStudent } from '../config/multer.js';
 
 const mainRequestRoutes = express.Router();
@@ -16,15 +16,13 @@ mainRequestRoutes.route('/mainrequest/accept').put(verifyProfessor, async (req, 
 	// returns the mainRequest data
 	// request body should have this parameter
 	// requestId - int
-	// the request should contain this file
-	// file - pdf
+	console.log(req.body)
 	const { requestId } = req.body;
 
-	let professorFilePath = req.file.path;
-	if (!requestId || !req.file) return res.status(400).json('Bad Request');
+	if (!requestId) return res.status(400).json('Bad Request');
 
 	try {
-		let request = await acceptMainRequest(requestId, professorFilePath);
+		let request = await acceptMainRequest(requestId);
 		return res.status(200).json(request);
 	} catch (e) {
 		console.warn(e.stack);
@@ -122,12 +120,30 @@ mainRequestRoutes.route('/mainrequest').post(uploadStudent.single('file'), verif
 	}
 });
 
+mainRequestRoutes.route('/mainrequest/uploadStudentFile/:mainRequestId').put(uploadStudent.single('file'), async (req, res) => {
+	// updates the mainRequest with the path to the file signed by the student
+	// request body should have this parameter
+	// file - pdf
+
+	let studentFilePath = req.file.path;
+	const id = req.params.mainRequestId;
+
+	if (!req.file) return res.status(400).json('Bad Request');
+
+	try {
+		let request = await updateMainRequestWithStudentFile({ studentFilePath, id });
+		return res.status(200).json(request);
+	} catch (e) {
+		console.warn(e.stack);
+		return res.status(500).json(e.message);
+	}
+});
+
 mainRequestRoutes.route('/mainrequest/uploadProfessorFile/:mainRequestId').put(uploadProfessor.single('file'), async (req, res) => {
 	// updates the mainRequest with the path to the file signed by the professor
 	// request body should have this parameter
 	// file - pdf
 
-	console.log(req.file)
 	let professorFilePath = req.file.path;
 	const id = req.params.mainRequestId;
 

@@ -63,10 +63,23 @@ function MainRequest({mainReqId, status, profFile, studFile}){
         })
         .then(response => console.log(response.data))
         .catch(error => console.error('Error:', error));
+        
+
+        axios.put(`${url}/mainrequest/accept`, {requestId:mainReqId}, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+            },
+        })
+        .then(response => console.log(response.data))
     }
 
     const handleReject = () =>{
-        
+        axios.put(`${url}/mainrequest/reject`, {requestId:mainReqId}, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+            },
+        })
+        .then(response => console.log(response.data))
     }
 
     return(
@@ -89,7 +102,7 @@ function MainRequest({mainReqId, status, profFile, studFile}){
 
             <button onClick={handleUploadSigned}>Send signed Paper</button>
 
-            <button onClick={handleReject}>Reject Request Papar</button>
+            <button onClick={handleReject}>Reject Request Paper</button>
         </div>
     )
 }

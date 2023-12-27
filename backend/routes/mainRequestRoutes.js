@@ -1,7 +1,7 @@
 import express from 'express';
+import { uploadProfessor, uploadStudent } from '../config/multer.js';
 import { verifyProfessor, verifyStudent, verifyToken } from '../middleware/authMiddleware.js';
 import { acceptMainRequest, createMainRequest, getMainRequestById, getMainRequestByStudentId, getMainRequestsByProfessorId, rejectMainRequest, updateMainRequestWithProfessorFile, updateMainRequestWithStudentFile } from '../models/mainRequest.js';
-import { uploadProfessor, uploadStudent } from '../config/multer.js';
 
 const mainRequestRoutes = express.Router();
 
@@ -16,7 +16,6 @@ mainRequestRoutes.route('/mainrequest/accept').put(verifyProfessor, async (req, 
 	// returns the mainRequest data
 	// request body should have this parameter
 	// requestId - int
-	console.log(req.body)
 	const { requestId } = req.body;
 
 	if (!requestId) return res.status(400).json('Bad Request');
@@ -157,7 +156,6 @@ mainRequestRoutes.route('/mainrequest/uploadProfessorFile/:mainRequestId').put(u
 		return res.status(500).json(e.message);
 	}
 });
-
 
 mainRequestRoutes.route('/mainrequest/downloadStudentFile/:mainRequestId').get(async (req, res) => {
 	// returns the mainRequest data

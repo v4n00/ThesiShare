@@ -29,21 +29,21 @@ registerSessionRoutes.route('/registration-session/').get(verifyStudent, async (
 });
 
 registerSessionRoutes.route('/registration-session/:professorId').get(verifyProfessor, async (req, res) => {
-    // returns an array of sessions for a professor's id
-    try {
-        const sessions = await getAllRegistrationSessionByProfessorId(req.params.professorId);
-        return res.status(200).json(sessions);
-    } catch (e) {
-        console.warn(e.stack);
-        return res.status(500).json(e.message);
-    }
+	// returns an array of sessions for a professor's id
+	try {
+		const sessions = await getAllRegistrationSessionByProfessorId(req.params.professorId);
+		return res.status(200).json(sessions);
+	} catch (e) {
+		console.warn(e.stack);
+		return res.status(500).json(e.message);
+	}
 });
 
 registerSessionRoutes.route('/registration-session/create').post(verifyProfessor, async (req, res) => {
 	// request body should have these 4 parameters
 	// professorId - int
-	// startTime - int, unix time in milliseconds
-	// endTime - int, unix time in milliseconds
+	// startTime - int, unix time in milliseconds!!!!!!!!!!!!!!!!!!! (not seconds, add 3 zeros)
+	// endTime - int, unix time in milliseconds!!!!!!!!!!!!!!!!!!! (not seconds, add 3 zeros)
 	// maxStudents - int > 1
 	let { professorId, startTime, endTime, maxStudents } = req.body;
 	if (!professorId || !startTime || !endTime || !maxStudents) return res.status(400).json('Bad Request');

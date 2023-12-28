@@ -6,6 +6,7 @@ The application is built on a **Single Page Application** architecture and is ac
 
 > [!IMPORTANT]
 > For backend, use `npm run rdb` to reset the database, and use `npm run dev` to start developing
+> 
 > For frontend, use `npm start` to start developing
 
 # Functionalities

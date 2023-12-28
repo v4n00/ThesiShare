@@ -1,3 +1,9 @@
+.homeDetails{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
 .homeProfPhases{
     display: flex;
     overflow: hidden;
@@ -7,6 +13,40 @@
     overflow: hidden;
     overflow-y: scroll;
     width: 34vw;
+}
+
+#modalContainer{
+    width: 100vw;
+    height: 90vh;
+    position: absolute;
+    display: none;
+    z-index: 2;
+}
+
+#modalSession{
+    border-radius: 10px;
+    width: 30vw;
+    height: 30vh;
+    background-color: coral;
+    position: absolute;
+    top:10%;
+    left: 35vw;
+    display: flex;
+    flex-direction:column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.createSessionBtn{
+    background-color: coral;
+    height: 4vh;
+    width: 10vw;
+    border: none;
+}
+
+.createSessionBtn:hover{
+    transform: translateY(-0.5vh);
+    z-index: 1;
 }
 
 .phaseProf{
